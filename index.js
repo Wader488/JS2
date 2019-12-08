@@ -1,29 +1,87 @@
-const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 150 },
-    { title: 'Jacket', price: 150 },
-    { title: 'Shoes', price: 150 },
-    { title: 'Shirt red', price: 250 },
-    { title: 'Socks red', price: 250 },
-    { title: 'Jacket red', price: 250 },
-    { title: 'Shoes red', price: 250 },
-    { title: 'Shirt blue', price: 350 }
-    
-];
+//задание 1
+class cart {
+    cartDelivery(){
+        //расчет стоимости доставки
+    }
+    cartSumm(){
+        //Подсчет общей суммы товаров в корзине
+    }
+}
 
-const renderGoodsItem = (title, price) => {
-    return `<div class="goods-item"><h3>${title}</h3><div class="image">Image</div><p>${price}</p><a href=#>Купить</a></div>`
-};
+class cartProduct{
+    cartProductSumm(){
+        //Подсчет суммы товара каждого типа в корзине
+    }
+    cartProductDiscount(){
+        //Подсчет скидки на товар каждого типа в корзине
+    }
+}
 
-const renderGoodsList = (list) => {
-    const goodsList = list.map(item => renderGoodsItem(item.title, item.price));
-    
-    // Задание 3
-    //В следующей строке мы выводили товары, goodsList является массивом и при выводе мы получаем его элементы с разделителем запятой, что нам не нужно
-    //document.querySelector('.goods-list').innerHTML = goodsList;
-    // я заменил вывод целого массива на вывод его эелементов путем обхода каждого элемента и вставки его в класс goods-list
-    
-    goodsList.forEach(goodsListItem => document.querySelector('.goods-list').insertAdjacentHTML('beforeEnd', goodsListItem));
-};
 
-renderGoodsList(goods);
+class GoodsItem {
+    constructor(title = 'Без имени', price = '') {
+        this.title = title;
+        this.price = price;
+    }
+    render() {
+        return `<div class="goods-item"><a href="#" class="imageLink"><div class="image">Image</div></a><a href="#" class="productTitleLink"><h3 class="productTitle">${this.title}</h3></a><p>${this.price} &#8381;</p><a href=# class="buyButton">Купить</a></div>`;
+    }
+}
+
+class GoodsList {
+    constructor() {
+        this.goods = [];
+        this.totalSumm = 0;
+    }
+    fetchGoods()  {
+        this.goods = [
+            { title: 'Shirt', price: 150 },
+            { title: 'Socks', price: 150 },
+            { title: 'Jacket', price: 150 },
+            { title: 'Shoes', price: 150 },
+            { title: 'Shirt red', price: 250 },
+            { title: 'Socks red', price: 250 },
+            { title: 'Jacket red', price: 250 },
+            { title: 'Shoes red', price: 250 },
+            { title: 'Shirt blue', price: 350 }
+        ];
+    }
+    render() {
+        let listHtml = '';
+        this.goods.forEach(good => {
+            const goodItem = new GoodsItem(good.title, good.price);
+            listHtml += goodItem.render();
+        });
+        document.querySelector('.goods-list').innerHTML = listHtml;
+    }
+    
+    //Задание 2: Добавьте для GoodsList метод, определяющий суммарную стоимость всех товаров.
+    //Вариант 1
+    summGoods1(){
+        let summ = 0;
+        this.goods.forEach(good =>
+            summ += good.price
+        );
+        console.log(summ);
+    }
+    
+    //Вариант 2, добавлено свойство totalSumm
+    summGoods2(){
+         this.goods.forEach(good => 
+            this.totalSumm += good.price
+        );
+    }
+}
+
+const list = new GoodsList();
+list.fetchGoods();
+list.render();
+
+console.log('Вариант 1');
+list.summGoods1();
+
+console.log('Вариант 2');
+list.summGoods2();
+console.log(list.totalSumm);
+
+
