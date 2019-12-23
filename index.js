@@ -1,19 +1,54 @@
-//Задание 1
-const str = "'Далече ли до крепости?' – спросил я у своего ямщика. Старый священник подошел ко мне с вопросом: 'Прикажете начинать?'. 'Тише, – говорит она мне, – отец болен, при смерти, и желает с тобою проститься'.";
-const regexp = /'/gmi;              
-console.log("Задание 1");
-console.log("Текст:");
-console.log(str);
+const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-console.log("Текст после замены:");
-console.log(str.replace(regexp, '"'));
+const app = new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        filteredGoods: [],
+        searchLine: ''
+    },
+    methods: {
+        makeGETRequest(url) {
+            return new Promise((resolve, reject) => {
+                let xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new window.XMLHttpRequest();
+                } else {
+                    xhr = new window.ActiveXObject('Microsoft.XMLHTTP');
+                }
 
-//Задание 2
-const str1 = "'Далече ли до крепости?' – спросил я у своего ямщика aren't. Старый священник подошел ко мне с вопросом o'clock: 'Прикажете начинать?'. 'Тише, – говорит она мне, – отец болен, при смерти, и желает с тобою проститься'.";
-const regexp1 = /\B'/gmi;  
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            const body = JSON.parse(xhr.responseText);
+                            resolve(body)
+                        } else {
+                            reject(xhr.responseText);
+                        }
+                    }
+                };
+                xhr.onerror = function (err) {
+                    reject(err);
+                };
 
-console.log("Задание 2"); 
-console.log(str1);
+                xhr.open('GET', url);
+                xhr.send();
+            });
+        },
+        filterGoods() {
+        const regexp = new RegExp(this.searchLine, 'i');
+        this.filteredGoods = this.goods.filter((good) => regexp.test(good.product_name)); 
+    }
+   
+    },
 
-console.log("Текст после замены:");
-console.log(str1.replace(regexp1, '"'));
+
+    async mounted() {
+        try {
+            this.goods = await this.makeGETRequest(`${API_URL}/catalogData.json`);
+            this.filteredGoods = [...this.goods];
+        } catch (e) {
+            console.error(e);
+        }
+    }
+});
