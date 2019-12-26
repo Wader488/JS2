@@ -14,7 +14,7 @@ header {
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.4);
 }
 
-.cartButton {
+.cart-button {
     color: white;
     background-color: #0069fb;
     border: none;
@@ -100,3 +100,14 @@ a {
     background-color: #4d32ff;
     color: white;
 }
+ .cart-container {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      width: 220px;
+      height: 100px;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    }

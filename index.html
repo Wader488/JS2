@@ -11,7 +11,27 @@
     <link rel="stylesheet" href="widgets/chat/style.css">
 </head>
 
-<body><div id="app">
+<body>
+  
+  <div id="app">
+  <header class="header">
+    <div class="container">
+      <form class="search-form" @submit.prevent>
+        <input type="text" class="search-input" v-model.trim="searchLine"/>
+      </form>
+      <button class="cart-button" @click="toggleCartVisibility">Корзина</button>
+      <div class="cart-container" v-if="isVisibleCart">
+
+      </div>
+    </div>
+  </header>
+  <main>
+    <goods-list :goods="filteredGoods"></goods-list>
+  </main>
+</div>
+  
+  
+ <!-- <div id="app">
    <header class="header">
     <div class="container">
         <form class="search-form">
@@ -22,7 +42,7 @@
     </div>
 </header>
     <main>
-        <!--<div class="goods-list"></div>-->
+        <div class="goods-list"></div>
         
          <div class="goods-list">
       <div class="goods-item" v-for="good in filteredGoods" :key="good.id_product">
@@ -30,9 +50,11 @@
       </div>
     </div>
     </main>
+     </div>-->
+    
     <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="application/javascript" src="index.js"></script>
-    </div>
+   
 </body>
 
 </html>
