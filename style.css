@@ -111,3 +111,6 @@ a {
       border-radius: 4px;
       box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
     }
+.not-found-items {
+      text-align: center;
+    }

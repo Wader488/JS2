@@ -3,13 +3,65 @@ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-sto
 
 const cart = [];
 
+
+Vue.component('search', {
+  props: {
+    searchLine: {
+      type: String,
+      required: false,
+      default: '',
+    }
+  },
+  template: `
+      <form class="search-form" @submit.prevent>
+        <input type="text" class="search-input" :value="searchLine"
+          @input="updateSearchLine"/>
+      </form>
+  `,
+  methods: {
+    updateSearchLine(val) {
+      const value = val.target.value;
+      this.$emit('update:searchLine', value);
+    }
+  }
+});
+
+Vue.component('cart', {
+  data: () => ({
+    cart,
+    isVisibleCart: false,
+  }),
+  methods: {
+    toggleVisibility() {
+      this.isVisibleCart = !this.isVisibleCart;
+    }
+  },
+  template: `
+    <div class="cart-container" v-if="isVisibleCart">
+      <ul>
+        <li v-for="good in cart">
+           {{good.product_name}}
+        </li>
+      </ul>
+    </div>
+  `
+});
+
+
 Vue.component('goods-item', {
   props: ['good'],
+  methods: {
+    buy() {
+      cart.push(this.good);
+    }
+  },
   template: `
-     <div class="goods-item">
-       <a href="#" class="imageLink"><div class="image">Image</div></a><a href="#" class="productTitleLink"><h3 class="productTitle">{{ good.product_name }}</h3></a><p>{{ good.price }} &#8381;</p><a href=# class="buyButton">Купить</a>
+    <div class="goods-item">
+       <a href="#" class="imageLink"><div class="image">Image</div></a><a href="#" class="productTitleLink"><h3 class="productTitle">{{ good.product_name }}</h3></a><p>{{ good.price }} &#8381;</p><a href=# class="buyButton" @click="buy">Купить</a></div>
   `,
 });
+
+
 
 Vue.component('goods-list', {
   props: ['goods'],
@@ -64,7 +116,7 @@ const app = new Vue({
       });
     },
     toggleCartVisibility() {
-      this.isVisibleCart = !this.isVisibleCart;
+       this.$refs.cart.toggleVisibility();
     },
   },
   computed: {
